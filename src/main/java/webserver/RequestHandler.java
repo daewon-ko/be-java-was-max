@@ -2,10 +2,12 @@ package webserver;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.http.HttpRequest;
 import java.nio.file.Files;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import utils.HttpRequestUtils;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
@@ -25,16 +27,15 @@ public class RequestHandler implements Runnable {
             DataOutputStream dos = new DataOutputStream(out);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line = br.readLine();
+            String url = HttpRequestUtils.getUrl(line);
 
-            String[] splited = line.split(" ");
-            String path = splited[1];
-            System.out.println(path);
             logger.debug(line);
+
             while (!line.equals("")) {
                 line = br.readLine();
                 logger.debug(line);
             }
-            byte[] body = Files.readAllBytes(new File("./src/main/resources/templates"+path).toPath());
+            byte[] body = Files.readAllBytes(new File("./src/main/resources/templates"+url).toPath());
             response200Header(dos, body.length);
             responseBody(dos, body);
         } catch (IOException e) {
