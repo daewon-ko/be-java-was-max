@@ -4,7 +4,10 @@ import java.io.*;
 import java.net.Socket;
 import java.net.http.HttpRequest;
 import java.nio.file.Files;
+import java.util.Map;
 
+import db.Database;
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.HttpRequestUtils;
@@ -28,14 +31,22 @@ public class RequestHandler implements Runnable {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line = br.readLine();
             String url = HttpRequestUtils.getUrl(line);
+            if (url.startsWith("/user")) {
+                int index = url.indexOf("?");
+                String queryString = url.substring(index + 1);
+                Map<String, String> params = HttpRequestUtils.parseQueryString(queryString);
+                User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
+                Database.addUser(user);
+                url = "/index.html";
+
+            }
 
             logger.debug(line);
-
             while (!line.equals("")) {
                 line = br.readLine();
                 logger.debug(line);
             }
-            byte[] body = Files.readAllBytes(new File("./src/main/resources/templates"+url).toPath());
+            byte[] body = Files.readAllBytes(new File("./src/main/resources/templates" + url).toPath());
             response200Header(dos, body.length);
             responseBody(dos, body);
         } catch (IOException e) {
