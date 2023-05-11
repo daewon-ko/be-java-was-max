@@ -27,37 +27,99 @@ public class RequestHandler implements Runnable {
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
-            DataOutputStream dos = new DataOutputStream(out);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
             String line = br.readLine();
-            String url = HttpRequestUtils.getUrl(line);
-            if (url.startsWith("/user")) {
-                int index = url.indexOf("?");
-                String queryString = url.substring(index + 1);
-                Map<String, String> params = HttpRequestUtils.parseQueryString(queryString);
-                User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
-                Database.addUser(user);
-                url = "/index.html";
-
+            if (line.equals(null)) {
+                return;
             }
-
+            String url = HttpRequestUtils.getUrl(line);
             logger.debug(line);
             while (!line.equals("")) {
                 line = br.readLine();
                 logger.debug(line);
             }
-            byte[] body = Files.readAllBytes(new File("./src/main/resources/templates" + url).toPath());
-            response200Header(dos, body.length);
-            responseBody(dos, body);
+
+            if (url.startsWith("/user/create")) {
+                int index = url.indexOf("?");
+                String queryString = url.substring(index + 1);
+                Map<String, String> params = HttpRequestUtils.parseQueryString(queryString);
+                User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
+                Database.addUser(user);
+                logger.debug("User : {}", user);
+                url = "/index.html";
+                DataOutputStream dos = new DataOutputStream(out);
+                byte[] body = Files.readAllBytes(new File("./src/main/resources/templates" + url).toPath());
+                response200Header(dos, body.length);
+                responseBody(dos, body);
+
+            } else if (url.endsWith(".css")) {
+                DataOutputStream dos = new DataOutputStream(out);
+                byte[] body = Files.readAllBytes(new File("./src/main/resources/" + url).toPath());
+                responseHeaderCss(dos, body.length);
+                responseBody(dos, body);
+
+            } else if (url.endsWith(".js")) {
+                DataOutputStream dos = new DataOutputStream(out);
+                byte[] body = Files.readAllBytes(new File("./src/main/resources/" + url).toPath());
+                responseHeaderJs(dos, body.length);
+                responseBody(dos, body);
+
+            } else {
+                // 경로를 찍어야한다.
+                DataOutputStream dos = new DataOutputStream(out);
+                byte[] body = Files.readAllBytes(new File("./src/main/resources/templates" + url).toPath());
+                response200Header(dos, body.length);
+                responseBody(dos, body);
+
+            }
+
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
     }
 
+
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
         try {
+
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             dos.writeBytes("Content-Type: text/html;charset=utf-8\r\n");
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    private void responseIco(DataOutputStream dos, int lengthOfBodyContent) {
+        try {
+
+            dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            dos.writeBytes("Content-Type: image/x-icon;charset=utf-8\r\n");
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    private void responseHeaderCss(DataOutputStream dos, int lengthOfBodyContent) {
+        try {
+
+            dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            dos.writeBytes("Content-Type: text/css;charset=utf-8\r\n");
+            dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    private void responseHeaderJs(DataOutputStream dos, int lengthOfBodyContent) {
+        try {
+
+            dos.writeBytes("HTTP/1.1 200 OK \r\n");
+            dos.writeBytes("Content-Type: text/javascript;charset=utf-8\r\n");
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + "\r\n");
             dos.writeBytes("\r\n");
         } catch (IOException e) {
