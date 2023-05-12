@@ -53,22 +53,26 @@ public class RequestHandler implements Runnable {
                 url = "/index.html";
 
             }
-            if (contentType.equals(HTML_CONTENT_TYPE)) {
-                DataOutputStream dos = new DataOutputStream(out);
-                byte[] body = Files.readAllBytes(new File("./src/main/resources/templates" + url).toPath());
-                response200Header(dos, body.length);
-                responseBody(dos, body);
+            final DataOutputStream dos = new DataOutputStream(out);
+            String resourcePath = "./src/main/resources";
 
-            } else if (contentType.equals(CSS_CONTENT_TYPE)) {
-                DataOutputStream dos = new DataOutputStream(out);
-                byte[] body = Files.readAllBytes(new File("./src/main/resources" + url).toPath());
-                responseHeaderCss(dos, body.length);
-                responseBody(dos, body);
-            } else {
-                DataOutputStream dos = new DataOutputStream(out);
-                byte[] body = Files.readAllBytes(new File("./src/main/resources/" + url).toPath());
-                responseHeaderJs(dos, body.length);
-                responseBody(dos, body);
+            switch (contentType) {
+                case HTML_CONTENT_TYPE:
+                    resourcePath = resourcePath + "/templates";
+                    byte[] body = Files.readAllBytes(new File(resourcePath + url).toPath());
+                    response200Header(dos, body.length);
+                    responseBody(dos, body);
+                    break;
+                case CSS_CONTENT_TYPE:
+                    body = Files.readAllBytes(new File(resourcePath + url).toPath());
+                    responseHeaderCss(dos, body.length);
+                    responseBody(dos, body);
+                    break;
+                case JS_CONTENT_TYPE:
+                    body = Files.readAllBytes(new File(resourcePath + url).toPath());
+                    responseHeaderJs(dos, body.length);
+                    responseBody(dos, body);
+                    break;
             }
 
 
