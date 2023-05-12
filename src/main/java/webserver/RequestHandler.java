@@ -40,7 +40,8 @@ public class RequestHandler implements Runnable {
             logger.debug("URL: {} ", url);
 
             logger.debug(startLine);
-            String contentType = extractContentType(br);
+            String contentType = HttpRequestUtils.extractContentType(br);
+
 
             if (url.startsWith("/user/create")) {
                 int index = url.indexOf("?");
@@ -75,46 +76,6 @@ public class RequestHandler implements Runnable {
             logger.error(e.getMessage());
         }
     }
-
-    private static String extractContentType(final BufferedReader br) throws IOException {
-        String contentType = "";
-        String line = br.readLine();
-        while (line != null && !line.isEmpty()) {
-            if (line.startsWith("Accept: ")) {
-                String[] parts = line.split("[:,;]");
-                String wanted = parts[1].trim();
-                contentType = wanted;
-            }
-            line = br.readLine();
-            logger.debug("headerLine: {} ", line);
-        }
-        logger.debug("Content-Type: {}", contentType);
-        return contentType;
-    }
-
-    private void sendHttpResponse(final OutputStream out, final String url) throws IOException {
-        DataOutputStream dos = new DataOutputStream(out);
-        byte[] body = Files.readAllBytes(new File("./src/main/resources/" + url).toPath());
-        if (url.endsWith("html")) {
-            response200Header(dos, body.length);
-        } else if (url.startsWith("css")) {
-            responseHeaderCss(dos, body.length);
-        } else if (url.startsWith("js")) {
-            responseHeaderJs(dos, body.length);
-        }
-        responseBody(dos, body);
-    }
-
-//    private static void searchContentType(final Map<String, String> headers, final String line) {
-//        // Content-Type을 기준으로 Split
-//        if (line.startsWith("Accept: ")) {
-//            String[] splited = line.split("Accept: ");
-//        }
-//        String[] parts = line.split(": ");
-//        String key = parts[0];
-//        String value = parts[1];
-//        headers.put(key, value);
-//    }
 
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
