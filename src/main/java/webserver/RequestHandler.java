@@ -2,7 +2,6 @@ package webserver;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.http.HttpRequest;
 import java.nio.file.Files;
 import java.util.Map;
 
@@ -14,6 +13,9 @@ import utils.HttpRequestUtils;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
+    private static final String HTML_CONTENT_TYPE = "text/html";
+    private static final String CSS_CONTENT_TYPE = "text/css";
+    private static final String JS_CONTENT_TYPE = "*/*";
 
     private Socket connection;
 
@@ -28,16 +30,17 @@ public class RequestHandler implements Runnable {
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
             // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
             BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-            String line = br.readLine();
-            if (line.equals(null)) {
+
+            String startLine = br.readLine();
+            if (startLine == null) {
                 return;
             }
-            String url = HttpRequestUtils.getUrl(line);
-            logger.debug(line);
-            while (!line.equals("")) {
-                line = br.readLine();
-                logger.debug(line);
-            }
+
+            String url = HttpRequestUtils.getUrl(startLine);
+            logger.debug("URL: {} ", url);
+
+            logger.debug(startLine);
+            String contentType = extractContentType(br);
 
             if (url.startsWith("/user/create")) {
                 int index = url.indexOf("?");
@@ -47,36 +50,71 @@ public class RequestHandler implements Runnable {
                 Database.addUser(user);
                 logger.debug("User : {}", user);
                 url = "/index.html";
+
+            }
+            if (contentType.equals(HTML_CONTENT_TYPE)) {
                 DataOutputStream dos = new DataOutputStream(out);
                 byte[] body = Files.readAllBytes(new File("./src/main/resources/templates" + url).toPath());
                 response200Header(dos, body.length);
                 responseBody(dos, body);
 
-            } else if (url.endsWith(".css")) {
+            } else if (contentType.equals(CSS_CONTENT_TYPE)) {
                 DataOutputStream dos = new DataOutputStream(out);
-                byte[] body = Files.readAllBytes(new File("./src/main/resources/" + url).toPath());
+                byte[] body = Files.readAllBytes(new File("./src/main/resources" + url).toPath());
                 responseHeaderCss(dos, body.length);
                 responseBody(dos, body);
-
-            } else if (url.endsWith(".js")) {
+            } else {
                 DataOutputStream dos = new DataOutputStream(out);
                 byte[] body = Files.readAllBytes(new File("./src/main/resources/" + url).toPath());
                 responseHeaderJs(dos, body.length);
                 responseBody(dos, body);
-
-            } else {
-                // 경로를 찍어야한다.
-                DataOutputStream dos = new DataOutputStream(out);
-                byte[] body = Files.readAllBytes(new File("./src/main/resources/templates" + url).toPath());
-                response200Header(dos, body.length);
-                responseBody(dos, body);
-
             }
+
 
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
     }
+
+    private static String extractContentType(final BufferedReader br) throws IOException {
+        String contentType = "";
+        String line = br.readLine();
+        while (line != null && !line.isEmpty()) {
+            if (line.startsWith("Accept: ")) {
+                String[] parts = line.split("[:,;]");
+                String wanted = parts[1].trim();
+                contentType = wanted;
+            }
+            line = br.readLine();
+            logger.debug("headerLine: {} ", line);
+        }
+        logger.debug("Content-Type: {}", contentType);
+        return contentType;
+    }
+
+    private void sendHttpResponse(final OutputStream out, final String url) throws IOException {
+        DataOutputStream dos = new DataOutputStream(out);
+        byte[] body = Files.readAllBytes(new File("./src/main/resources/" + url).toPath());
+        if (url.endsWith("html")) {
+            response200Header(dos, body.length);
+        } else if (url.startsWith("css")) {
+            responseHeaderCss(dos, body.length);
+        } else if (url.startsWith("js")) {
+            responseHeaderJs(dos, body.length);
+        }
+        responseBody(dos, body);
+    }
+
+//    private static void searchContentType(final Map<String, String> headers, final String line) {
+//        // Content-Type을 기준으로 Split
+//        if (line.startsWith("Accept: ")) {
+//            String[] splited = line.split("Accept: ");
+//        }
+//        String[] parts = line.split(": ");
+//        String key = parts[0];
+//        String value = parts[1];
+//        headers.put(key, value);
+//    }
 
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {

@@ -17,7 +17,6 @@ public class HttpRequestUtils {
         log.debug("request URL:"+ path);
         return path;
     }
-
     // To DO : Stream 등을 통해 개선할 수는 없을까? 또 만약 그렇다면 그게 더 좋은 코드일까?
     public static Map<String, String> parseQueryString(String queryString) {
         HashMap<String, String> params = new HashMap<>();
