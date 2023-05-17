@@ -35,8 +35,10 @@ public class HttpRequestFactory {
         String[] splitStartLine = startLine.split(REQUEST_STARTLINE_SEPARATOR);
         HttpMethod httpMethod = HttpMethod.valueOf(splitStartLine[0]);
         String uri = splitStartLine[1];
-        Double httpVersionNumber = Double.valueOf(splitStartLine[2].split("/")[1]);
-        HttpVersion httpVersion = new HttpVersion(httpVersionNumber);
+//        Double httpVersionNumber = Double.valueOf(splitStartLine[2].split("/")[1]);
+//        HttpVersion httpVersion = new HttpVersion(httpVersionNumber);
+
+        HttpVersion httpVersion = HttpVersion.HTTP;
 
         String[] splitURI = uri.split("\\?");
         String path = splitURI[0];

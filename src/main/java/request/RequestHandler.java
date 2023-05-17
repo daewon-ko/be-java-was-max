@@ -41,13 +41,11 @@ public class RequestHandler implements Runnable {
             BufferedReader br = new BufferedReader(new InputStreamReader(in, UTF_8));
             HttpRequest httpRequest = HttpRequestFactory.createHttpRequest(br);
 
-
             byte[] messageBody = handleHttpRequest(httpRequest);
             HttpResponse httpResponse = HttpResponseFactory.createOkResponse(messageBody);
-            ContentType contentType =ContentType.of(httpRequest.getPath()) ;
+            ContentType contentType = ContentType.of(httpRequest.getPath());
             httpResponse.addHeader("Content-Type", contentType);
             httpResponse.addHeader("Content-Length", String.valueOf(httpResponse.getHttpMessageBody().length));
-
 
             HttpResponseUtils.response200Header(dos, httpResponse);
             HttpResponseUtils.responseBody(dos, httpResponse);
@@ -67,7 +65,6 @@ public class RequestHandler implements Runnable {
     //TODO : /user/create로 들어간 path를 /user/login.html로 바꾸는 방법은 없을까?
     private byte[] handleHttpRequest(HttpRequest httpRequest) throws URISyntaxException {
         String path = httpRequest.getPath();
-        //todo: 메서드 체이닝 해결! 내부적으로 메서드 만들기!
         HttpRequestQueryString queryString = httpRequest.getQueryString();
         if (RequestHandlerUtils.isStaticResource(path)) {
             return RequestHandlerUtils.readFile(httpRequest.getRequestStartLine());
@@ -75,15 +72,13 @@ public class RequestHandler implements Runnable {
             RequestHandlerUtils.requestSingUp(queryString);
             HttpRequestQueryString httpRequestQueryString = new HttpRequestQueryString(new HashMap<>());
             HttpRequestURI httpRequestURI = new HttpRequestURI("/user/login.html", httpRequestQueryString);
-            HttpRequestStartLine httpRequestStartLine = new HttpRequestStartLine(GET, httpRequestURI, new HttpVersion(1.1));
+            HttpRequestStartLine httpRequestStartLine = new HttpRequestStartLine(GET, httpRequestURI, HttpVersion.HTTP);
             httpRequest = new HttpRequest(httpRequestStartLine, new HttpRequestHeader(new HashMap<>()));
             HttpRequestStartLine requestStartLine = httpRequest.getRequestStartLine();
             return RequestHandlerUtils.readFile(requestStartLine);
         }
         return new byte[0];
     }
-
-
 
 
 }

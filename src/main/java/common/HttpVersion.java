@@ -1,16 +1,17 @@
 package common;
 
-public class HttpVersion {
-    private static final String name = "HTTP";
+public enum HttpVersion {
+
+    HTTP(1.1);
     private double version;
 
-    public HttpVersion(final double version) {
+    HttpVersion(final double version) {
         this.version = version;
     }
 
     @Override
     public String toString() {
-        return String.format("%s/%.1f", name, version);
+        return String.format("%s/%1.1f", name(), version);
     }
-
 }
+

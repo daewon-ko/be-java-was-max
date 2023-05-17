@@ -26,9 +26,6 @@ public class HttpRequestHeader {
 
     /**
      * 아래 stream 코드 원리에 대해서 학습하기
-     * \n은 단순개행이지만, \r\n과의 차이는?
-     * -> 리눅스 , 윈도우 운영체제의 차이
-     * @return
      */
     @Override
     public String toString() {
