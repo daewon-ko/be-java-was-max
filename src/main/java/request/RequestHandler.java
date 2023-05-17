@@ -1,4 +1,4 @@
-package webserver;
+package request;
 
 import java.io.*;
 import java.net.Socket;
@@ -9,7 +9,7 @@ import db.Database;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.HttpRequestUtils;
+import request.utils.HttpRequestUtils;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
