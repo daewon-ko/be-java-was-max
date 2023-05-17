@@ -14,15 +14,16 @@ import request.component.HttpRequestQueryString;
 import request.component.HttpRequestStartLine;
 import request.component.HttpRequestURI;
 import request.factory.HttpRequestFactory;
-import request.utils.RequestHandlerUtils;
+import utils.request.RequestHandlerUtils;
 import response.HttpResponse;
 import response.HttpResponseFactory;
+import utils.response.HttpResponseUtils;
 
 import static java.nio.charset.StandardCharsets.*;
 import static common.HttpMethod.*;
 
 public class RequestHandler implements Runnable {
-    private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
 
     private Socket connection;
 
@@ -31,7 +32,7 @@ public class RequestHandler implements Runnable {
     }
 
     public void run() {
-        logger.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(),
+        log.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(),
                 connection.getPort());
 
         try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
@@ -48,14 +49,14 @@ public class RequestHandler implements Runnable {
             httpResponse.addHeader("Content-Length", String.valueOf(httpResponse.getHttpMessageBody().length));
 
 
-            response200Header(dos, httpResponse);
-            responseBody(dos, httpResponse);
+            HttpResponseUtils.response200Header(dos, httpResponse);
+            HttpResponseUtils.responseBody(dos, httpResponse);
 
-            logger.debug("httpRequest: {}", httpRequest);
-            logger.debug("httpResponse : {}", httpResponse);
+            log.debug("httpRequest: {}", httpRequest);
+            log.debug("httpResponse : {}", httpResponse);
 
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -66,6 +67,7 @@ public class RequestHandler implements Runnable {
     //TODO : /user/create로 들어간 path를 /user/login.html로 바꾸는 방법은 없을까?
     private byte[] handleHttpRequest(HttpRequest httpRequest) throws URISyntaxException {
         String path = httpRequest.getRequestStartLine().getHttpRequestURI().getPath();
+        //todo: 메서드 체이닝 해결! 내부적으로 메서드 만들기!
         HttpRequestQueryString queryString = httpRequest.getRequestStartLine().getHttpRequestURI().getQueryString();
         if (RequestHandlerUtils.isStaticResource(path)) {
             return RequestHandlerUtils.readFile(httpRequest.getRequestStartLine());
@@ -82,21 +84,7 @@ public class RequestHandler implements Runnable {
         return new byte[0];
     }
 
-    private void response200Header(DataOutputStream dos, HttpResponse httpResponse) {
-        try {
-            dos.writeBytes(httpResponse.toString());
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-    }
 
-    private void responseBody(DataOutputStream dos, HttpResponse httpResponse) {
-        try {
-            byte[] messageBody = httpResponse.getHttpMessageBody();
-            dos.write(messageBody, 0, messageBody.length);
-            dos.flush();
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-    }
+
+
 }

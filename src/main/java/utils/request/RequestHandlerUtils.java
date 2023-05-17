@@ -1,4 +1,4 @@
-package request.utils;
+package utils.request;
 
 import db.Database;
 import model.User;
@@ -14,6 +14,7 @@ import java.nio.file.Files;
 
 public class RequestHandlerUtils {
     // TODO: 아래 STATIC_PATH, TEMPLATES_PATH에서 ./src/~..가 아니라 /src의 형태에서는 왜 불가능한가?
+    // -> FIlE 클래스가 가지고 있는 메서드의 어떤 특성?
     private static final Logger logger = LoggerFactory.getLogger(RequestHandlerUtils.class);
     private static final String STATIC_PATH = "./src/main/resources/static".trim();
     private static final String TEMPLATES_PATH = "./src/main/resources/templates".trim();
@@ -39,8 +40,13 @@ public class RequestHandlerUtils {
      * @return
      * @throws IOException
      */
+
+    // ../
+
     private static byte[] findFile(final String requestUriPath) throws IOException {
         // static 내 존재 시
+        // ./ -> 최상위 디렉토리
+        // 현재 디렉토리부터 찾는 경로는 무엇이지?..
         File file = new File(STATIC_PATH + requestUriPath);
         if (file.exists()) {
             return Files.readAllBytes(file.toPath());
@@ -50,7 +56,7 @@ public class RequestHandlerUtils {
         if (file.exists()) {
             return Files.readAllBytes(file.toPath());
         }
-        return null;
+         throw new RuntimeException();
     }
 
     public static boolean isStaticResource(final String requestUriPath) {
@@ -67,7 +73,7 @@ public class RequestHandlerUtils {
         return false;
     }
 
-    public static void requestSingUp(HttpRequestQueryString queryString) {
+    public static void  requestSingUp(HttpRequestQueryString queryString) {
         String userId = queryString.getValue("userId");
         String password = queryString.getValue("password");
         String name = queryString.getValue("name");

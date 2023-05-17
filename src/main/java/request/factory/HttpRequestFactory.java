@@ -7,7 +7,7 @@ import request.component.HttpRequestHeader;
 import request.component.HttpRequestQueryString;
 import request.component.HttpRequestStartLine;
 import request.component.HttpRequestURI;
-import request.utils.HttpRequestUtils;
+import utils.request.HttpRequestUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
