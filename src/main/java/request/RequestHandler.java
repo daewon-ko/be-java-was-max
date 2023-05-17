@@ -44,7 +44,7 @@ public class RequestHandler implements Runnable {
 
             byte[] messageBody = handleHttpRequest(httpRequest);
             HttpResponse httpResponse = HttpResponseFactory.createOkResponse(messageBody);
-            ContentType contentType =ContentType.of(httpRequest.getRequestStartLine().getHttpRequestURI().getPath()) ;
+            ContentType contentType =ContentType.of(httpRequest.getPath()) ;
             httpResponse.addHeader("Content-Type", contentType);
             httpResponse.addHeader("Content-Length", String.valueOf(httpResponse.getHttpMessageBody().length));
 
@@ -66,9 +66,9 @@ public class RequestHandler implements Runnable {
     //TODO : 왜 QueryString은 ?password=1234&name=1234&userId=1234&email=1234%401234와 같은 형식으로 들어갈까? 또 그렇게 들억가도 문제는 없을까?
     //TODO : /user/create로 들어간 path를 /user/login.html로 바꾸는 방법은 없을까?
     private byte[] handleHttpRequest(HttpRequest httpRequest) throws URISyntaxException {
-        String path = httpRequest.getRequestStartLine().getHttpRequestURI().getPath();
+        String path = httpRequest.getPath();
         //todo: 메서드 체이닝 해결! 내부적으로 메서드 만들기!
-        HttpRequestQueryString queryString = httpRequest.getRequestStartLine().getHttpRequestURI().getQueryString();
+        HttpRequestQueryString queryString = httpRequest.getQueryString();
         if (RequestHandlerUtils.isStaticResource(path)) {
             return RequestHandlerUtils.readFile(httpRequest.getRequestStartLine());
         } else if (path.equals("/user/create")) {
@@ -78,7 +78,6 @@ public class RequestHandler implements Runnable {
             HttpRequestStartLine httpRequestStartLine = new HttpRequestStartLine(GET, httpRequestURI, new HttpVersion(1.1));
             httpRequest = new HttpRequest(httpRequestStartLine, new HttpRequestHeader(new HashMap<>()));
             HttpRequestStartLine requestStartLine = httpRequest.getRequestStartLine();
-            path = requestStartLine.getHttpRequestURI().getPath();
             return RequestHandlerUtils.readFile(requestStartLine);
         }
         return new byte[0];

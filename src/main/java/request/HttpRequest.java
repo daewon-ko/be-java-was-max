@@ -1,7 +1,10 @@
 package request;
 
 import request.component.HttpRequestHeader;
+import request.component.HttpRequestQueryString;
 import request.component.HttpRequestStartLine;
+
+import java.util.HashMap;
 
 public class HttpRequest {
     /*
@@ -25,6 +28,13 @@ public class HttpRequest {
 
     public HttpRequestHeader getRequestHeader() {
         return requestHeader;
+    }
+
+    public String getPath() {
+        return requestStartLine.getHttpRequestURI().getPath();
+    }
+    public HttpRequestQueryString getQueryString() {
+        return requestStartLine.getHttpRequestURI().getQueryString();
     }
 
     @Override
