@@ -2,10 +2,8 @@ package request.utils;
 
 import db.Database;
 import model.User;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import request.HttpRequest;
 import request.component.HttpRequestQueryString;
 import request.component.HttpRequestStartLine;
 import request.component.HttpRequestURI;
@@ -13,9 +11,6 @@ import request.component.HttpRequestURI;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 public class RequestHandlerUtils {
     // TODO: 아래 STATIC_PATH, TEMPLATES_PATH에서 ./src/~..가 아니라 /src의 형태에서는 왜 불가능한가?
