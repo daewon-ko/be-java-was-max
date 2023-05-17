@@ -33,7 +33,6 @@ public class HttpRequestUtils {
             }
         }
         return params;
-
     }
 
     public static String extractContentType(final BufferedReader br) throws IOException {

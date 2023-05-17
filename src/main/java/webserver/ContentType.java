@@ -14,4 +14,10 @@ public enum ContentType {
     public String getValue() {
         return value;
     }
+
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

@@ -51,7 +51,6 @@ public class RequestHandler implements Runnable {
                 Database.addUser(user);
                 logger.debug("User : {}", user);
                 url = "/index.html";
-
             }
             final DataOutputStream dos = new DataOutputStream(out);
             String resourcePath = "./src/main/resources";
@@ -75,12 +74,10 @@ public class RequestHandler implements Runnable {
                     break;
             }
 
-
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
     }
-
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
         try {
@@ -117,7 +114,6 @@ public class RequestHandler implements Runnable {
             logger.error(e.getMessage());
         }
     }
-
     private void responseHeaderJs(DataOutputStream dos, int lengthOfBodyContent) {
         try {
 
