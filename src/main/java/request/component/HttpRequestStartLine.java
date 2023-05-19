@@ -5,12 +5,12 @@ import common.HttpVersion;
 
 public class HttpRequestStartLine {
     private final HttpMethod httpMethod;
-    private final HttpRequestURI httpRequestURI;
+    private final HttpRequestTarget httpRequestTarget;
     private final HttpVersion httpVersion;
 
-    public HttpRequestStartLine(final HttpMethod httpMethod, final HttpRequestURI httpRequestURI, final HttpVersion httpVersion) {
+    public HttpRequestStartLine(final HttpMethod httpMethod, final HttpRequestTarget httpRequestTarget, final HttpVersion httpVersion) {
         this.httpMethod = httpMethod;
-        this.httpRequestURI = httpRequestURI;
+        this.httpRequestTarget = httpRequestTarget;
         this.httpVersion = httpVersion;
     }
 
@@ -18,8 +18,8 @@ public class HttpRequestStartLine {
         return httpMethod;
     }
 
-    public HttpRequestURI getHttpRequestURI() {
-        return httpRequestURI;
+    public HttpRequestTarget getHttpRequestURI() {
+        return httpRequestTarget;
     }
 
     public HttpVersion getHttpVersion() {
@@ -28,6 +28,6 @@ public class HttpRequestStartLine {
 
     @Override
     public String toString() {
-        return String.format("%s %s %s", httpMethod, httpRequestURI, httpVersion);
+        return String.format("%s %s %s", httpMethod, httpRequestTarget, httpVersion);
     }
 }

@@ -2,6 +2,7 @@ package request.component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * userId=1234&password=1234
@@ -32,6 +33,13 @@ public class HttpRequestQueryString {
 
     public void add(String key, String value) {
         parameter.put(key, value);
+    }
+
+    public void add(Map<String, String> param) {
+        Set<String> keySet = param.keySet();
+        for (String key : keySet) {
+            parameter.put(key, param.get(key));
+        }
     }
 
     @Override

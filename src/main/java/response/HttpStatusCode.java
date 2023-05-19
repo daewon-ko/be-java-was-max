@@ -1,17 +1,20 @@
 package response;
 
 public enum HttpStatusCode {
-    OK(200);
+    OK("OK",200),
+    FOUND("Found", 302);
 
-    private int value;
+    private int statusCodeNumber;
+    private String reasonPhrase;
 
 
-    HttpStatusCode(final int value) {
-        this.value = value;
+    HttpStatusCode(final String reasonPhrase, final int statusCodeNumber) {
+        this.reasonPhrase = reasonPhrase;
+        this.statusCodeNumber = statusCodeNumber;
     }
 
     @Override
     public String toString() {
-        return String.format("%d %s", value, name());
+        return String.format("%d %s", statusCodeNumber, reasonPhrase);
     }
 }

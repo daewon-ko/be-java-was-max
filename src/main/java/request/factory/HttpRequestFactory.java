@@ -6,7 +6,7 @@ import common.HttpVersion;
 import request.component.HttpRequestHeader;
 import request.component.HttpRequestQueryString;
 import request.component.HttpRequestStartLine;
-import request.component.HttpRequestURI;
+import request.component.HttpRequestTarget;
 import utils.request.HttpRequestUtils;
 
 import java.io.BufferedReader;
@@ -26,6 +26,13 @@ public class HttpRequestFactory {
         HttpRequestStartLine startLine = parsingStartLine(br);
         HttpRequestHeader header = parsingHeader(br);
 
+
+//        System.out.println(br.readLine());
+//        System.out.println(br.readLine());
+//        System.out.println(br.readLine());
+//        System.out.println(br.readLine());
+//        System.out.println(br.readLine());
+//        System.out.println(br.readLine());
         return new HttpRequest(startLine, header);
 
     }
@@ -48,9 +55,9 @@ public class HttpRequestFactory {
             Map<String, String> parameter = HttpRequestUtils.parseQueryString(queryString);
             httpRequestQueryString = new HttpRequestQueryString(parameter);
         }
-        HttpRequestURI httpRequestURI = new HttpRequestURI(path, httpRequestQueryString);
+        HttpRequestTarget httpRequestTarget = new HttpRequestTarget(path, httpRequestQueryString);
 
-        return new HttpRequestStartLine(httpMethod, httpRequestURI, httpVersion);
+        return new HttpRequestStartLine(httpMethod, httpRequestTarget, httpVersion);
     }
 
     private static HttpRequestHeader parsingHeader(final BufferedReader br) throws IOException {
@@ -66,4 +73,6 @@ public class HttpRequestFactory {
         return httpRequestHeader;
 
     }
+
+
 }

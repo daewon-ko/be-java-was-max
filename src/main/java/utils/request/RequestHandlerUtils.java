@@ -6,8 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import request.component.HttpRequestQueryString;
 import request.component.HttpRequestStartLine;
-import request.component.HttpRequestURI;
+import request.component.HttpRequestTarget;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,9 +21,9 @@ public class RequestHandlerUtils {
     private static final String TEMPLATES_PATH = "./src/main/resources/templates".trim();
 
     public static byte[] readFile(HttpRequestStartLine httpRequestStartLine) {
-        HttpRequestURI httpRequestURI = httpRequestStartLine.getHttpRequestURI();
-        String requestUriPath = httpRequestURI.getPath();
-        logger.debug("requestURI: {}", httpRequestURI);
+        HttpRequestTarget httpRequestTarget = httpRequestStartLine.getHttpRequestURI();
+        String requestUriPath = httpRequestTarget.getPath();
+        logger.debug("requestURI: {}", httpRequestTarget);
         logger.debug("requestURIPath : {}", requestUriPath);
         try {
             return findFile(requestUriPath);
@@ -81,6 +82,49 @@ public class RequestHandlerUtils {
         User user = new User(userId, password, name, email);
         logger.debug("user: {}", user);
         Database.addUser(user);
+    }
+
+
+
+    public static String getRequestBody(final BufferedReader br, final String requestBodyLength) throws IOException {
+        char[] buffer = new char[Integer.valueOf(requestBodyLength)];
+        br.read(buffer, 0, Integer.valueOf(requestBodyLength));
+        String s = String.valueOf(buffer);
+        return s;
+    }
+
+    //TODO : 메서드 이름 고민하기! 부적절해보임.
+
+
+//    public static String readRequestBody(BufferedReader br, int bodyLength) throws IOException {
+//        StringBuilder requestBody = new StringBuilder();
+//        String line = br.readLine();
+//        while (!(line = br.readLine()).equals("")) {
+//        }
+////        while (line != null && !line.isEmpty()) {
+////            line = br.readLine();
+////        }
+//        if (line != null && bodyLength > 0) {
+//            requestBody.append(line.substring(0, Math.min(bodyLength, line.length())));
+//        }
+//        return requestBody.toString();
+//    }
+
+    /*
+    쓰레드 디버깅..
+    소켓연결해서 Input, Output Test 까다롭다...
+    시부레...
+
+     */
+    public static String readRequestBody(BufferedReader br, Integer bodyLength) throws IOException {
+        String requestBody = "";
+        logger.debug("br.readLine: {}", br.readLine());
+        while (!br.readLine().equals("")) {
+            br.readLine();
+        }
+        requestBody = br.readLine().substring(0, bodyLength);
+        return requestBody;
+
     }
 
 

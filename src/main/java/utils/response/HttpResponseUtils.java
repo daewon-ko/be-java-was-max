@@ -10,7 +10,7 @@ import java.io.IOException;
 public class HttpResponseUtils {
     private static Logger log = LoggerFactory.getLogger(HttpResponseUtils.class);
 
-    public static void response200Header(DataOutputStream dos, HttpResponse httpResponse) {
+    public static void responseHeader(DataOutputStream dos, HttpResponse httpResponse) {
         try {
             dos.writeBytes(httpResponse.toString());
         } catch (IOException e) {
