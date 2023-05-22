@@ -74,24 +74,6 @@ public class RequestHandlerUtils {
         return false;
     }
 
-    public static void  requestSingUp(HttpRequestQueryString queryString) {
-        String userId = queryString.getValue("userId");
-        String password = queryString.getValue("password");
-        String name = queryString.getValue("name");
-        String email = queryString.getValue("email");
-        User user = new User(userId, password, name, email);
-        logger.debug("user: {}", user);
-        Database.addUser(user);
-    }
-
-
-
-    public static String getRequestBody(final BufferedReader br, final String requestBodyLength) throws IOException {
-        char[] buffer = new char[Integer.valueOf(requestBodyLength)];
-        br.read(buffer, 0, Integer.valueOf(requestBodyLength));
-        String s = String.valueOf(buffer);
-        return s;
-    }
 
     //TODO : 메서드 이름 고민하기! 부적절해보임.
 

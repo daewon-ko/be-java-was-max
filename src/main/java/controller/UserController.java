@@ -29,11 +29,11 @@ public class UserController {
         log.debug("ContentLength: {}", httpRequest.getRequestHeader().getHeader("Content-Length"));
         String requestBodyLength = httpRequest.getRequestHeader().getHeader("Content-Length");
 
-        String requestBody = RequestHandlerUtils.getRequestBody(br, requestBodyLength);
+        String requestBody = HttpRequestUtils.getRequestBody(br, requestBodyLength);
 
         Map<String, String> param = HttpRequestUtils.parseQueryString(requestBody);
         queryString.add(param);
-        RequestHandlerUtils.requestSingUp(queryString);
+        HttpRequestUtils.requestSingUp(queryString);
 
         httpRequest = new HttpRequest(httpRequestStartLine, new HttpRequestHeader(new HashMap<>()));
         HttpRequestStartLine requestStartLine = httpRequest.getRequestStartLine();

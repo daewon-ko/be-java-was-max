@@ -1,8 +1,13 @@
 package utils.request;
 
+import db.Database;
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import request.component.HttpRequestQueryString;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +27,27 @@ public class HttpRequestUtils {
         }
         return parseQueryString;
     }
+
+
+    public static void  requestSingUp(HttpRequestQueryString queryString) {
+        String userId = queryString.getValue("userId");
+        String password = queryString.getValue("password");
+        String name = queryString.getValue("name");
+        String email = queryString.getValue("email");
+        User user = new User(userId, password, name, email);
+        log.debug("user: {}", user);
+        Database.addUser(user);
+    }
+
+
+
+    public static String getRequestBody(final BufferedReader br, final String requestBodyLength) throws IOException {
+        char[] buffer = new char[Integer.valueOf(requestBodyLength)];
+        br.read(buffer, 0, Integer.valueOf(requestBodyLength));
+        String s = String.valueOf(buffer);
+        return s;
+    }
+
 
 
     //ToDO : 아래와 같이 ContentType을 Request에서 추출하는 것은 방법이 없을까?
