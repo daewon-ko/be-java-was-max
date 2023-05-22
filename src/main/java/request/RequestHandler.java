@@ -38,10 +38,14 @@ public class RequestHandler implements Runnable {
                 StaticResourceHandler.handleStaticResourceRequest(dos, httpRequest, path);
             } else if (path.equals("/user/create")) {
                 UserController.handleSinupRequest(dos, br, httpRequest);
+            } else if (path.equals("/user/login")) {
+                UserController.handleLoginRequest(dos, br, httpRequest);
             }
 
 
         } catch (IOException e) {
+            log.error(e.getMessage());
+        } catch (RuntimeException e) {
             log.error(e.getMessage());
         }
     }
