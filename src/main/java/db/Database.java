@@ -29,7 +29,7 @@ public class Database {
                 return true;
             }
         }
-        throw new RuntimeException("존재하지 않는 회원입니다.");
+        return false;
     }
 
     public static Collection<User> findAll() {

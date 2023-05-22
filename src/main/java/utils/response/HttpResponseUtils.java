@@ -41,7 +41,15 @@ public class HttpResponseUtils {
 
     // TODO : Location의 value값을 /index.html로 설정하는게 맞을까? 아니면 localhost:8080/index.html로 설정하는게 올바를까?
     // 일단 작동은 잘 한다. 그러나 원리는 아직은 잘 모르겠음.
-    public static void sendHttp302Response(final DataOutputStream dos, final byte[] messageBody) {
+    public static void sendHttp302ResponseLoginFailed(final DataOutputStream dos, final byte[] messageBody) {
+        HttpResponse httpResponse = HttpResponseFactory.create302FoundResponse(messageBody);
+        httpResponse.addHeader("Location", "/user/login_failed.html");
+        HttpResponseUtils.responseHeader(dos, httpResponse);
+        HttpResponseUtils.responseBody(dos, httpResponse);
+        log.debug("httpResponse: {}", httpResponse);
+    }
+
+    public static void sendHttp302ResponseBasicHome(final DataOutputStream dos, final byte[] messageBody) {
         HttpResponse httpResponse = HttpResponseFactory.create302FoundResponse(messageBody);
         httpResponse.addHeader("Location", "/index.html");
         HttpResponseUtils.responseHeader(dos, httpResponse);
