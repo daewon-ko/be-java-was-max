@@ -61,21 +61,22 @@ public class UserController {
         HttpRequestQueryString queryString = httpRequest.getQueryString();
         HttpRequestHeader requestHeader = httpRequest.getRequestHeader();
 
-        for (String id : parseQueryString.keySet()) {
-            String password = parseQueryString.get(id);
-            if (Database.isExistUser(id, password)) {
-                // 로그인 성공 시
-                HttpRequestTarget httpRequestTarget = new HttpRequestTarget("/index.html", queryString);
-                HttpRequestStartLine httpRequestStartLine = new HttpRequestStartLine(POST, httpRequestTarget, HttpVersion.HTTP);
-                httpRequest = new HttpRequest(httpRequestStartLine, requestHeader);
 
-                String path = httpRequest.getPath();
-                ContentType contentType = ContentType.of(path);
-                HttpRequestStartLine requestStartLine = httpRequest.getRequestStartLine();
-                byte[] messageBody = RequestHandlerUtils.readFile(requestStartLine);
-                sendHttp200Response(dos, messageBody, contentType);
+        String userId = parseQueryString.get("userId");
+        String password = parseQueryString.get("password");
 
-            }
+        if (Database.isExistUser(userId, password)) {
+            // 로그인 성공 시
+            HttpRequestTarget httpRequestTarget = new HttpRequestTarget("/index.html", queryString);
+            HttpRequestStartLine httpRequestStartLine = new HttpRequestStartLine(POST, httpRequestTarget, HttpVersion.HTTP);
+            httpRequest = new HttpRequest(httpRequestStartLine, requestHeader);
+
+            String path = httpRequest.getPath();
+            ContentType contentType = ContentType.of(path);
+            HttpRequestStartLine requestStartLine = httpRequest.getRequestStartLine();
+            byte[] messageBody = RequestHandlerUtils.readFile(requestStartLine);
+            sendHttp302ResponseBasicHome(dos, messageBody);
+
 
         }
         // DB에 존재하지 않을경우(즉 회원가입이 되어있지 않을 경우)
