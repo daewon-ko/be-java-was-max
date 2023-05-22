@@ -1,5 +1,7 @@
 package request.factory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import request.HttpRequest;
 import common.HttpMethod;
 import common.HttpVersion;
@@ -15,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HttpRequestFactory {
+    private static final Logger log = LoggerFactory.getLogger(HttpRequestFactory.class);
     private static final String CRLF = "";
     private static final String REQUEST_STARTLINE_SEPARATOR = " ";
     private static final String REQUEST_HEADER_SEPARATOR = ": \\s*";
@@ -25,14 +28,6 @@ public class HttpRequestFactory {
     public static HttpRequest createHttpRequest(final BufferedReader br) throws IOException {
         HttpRequestStartLine startLine = parsingStartLine(br);
         HttpRequestHeader header = parsingHeader(br);
-
-
-//        System.out.println(br.readLine());
-//        System.out.println(br.readLine());
-//        System.out.println(br.readLine());
-//        System.out.println(br.readLine());
-//        System.out.println(br.readLine());
-//        System.out.println(br.readLine());
         return new HttpRequest(startLine, header);
 
     }

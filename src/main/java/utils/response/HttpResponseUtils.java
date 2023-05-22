@@ -1,8 +1,10 @@
 package utils.response;
 
+import common.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import response.HttpResponse;
+import response.HttpResponseFactory;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -26,5 +28,23 @@ public class HttpResponseUtils {
         } catch (IOException e) {
             log.error(e.getMessage());
         }
+    }
+
+    public static void sendHttp200Response(final DataOutputStream dos, final byte[] messageBody, final ContentType contentType) {
+        HttpResponse httpResponse = HttpResponseFactory.create200OkResponse(messageBody);
+        httpResponse.addHeader("Content-Type", contentType);
+        httpResponse.addHeader("Content-Length", String.valueOf(httpResponse.getHttpMessageBody().length));
+        HttpResponseUtils.responseHeader(dos, httpResponse);
+        HttpResponseUtils.responseBody(dos, httpResponse);
+        log.debug("httpResponse: {}", httpResponse);
+    }
+
+    // TODO : Location의 value값을 /index.html로 설정하는게 맞을까? 아니면 localhost:8080/index.html로 설정하는게 올바를까?
+    public static void sendHttp302Response(final DataOutputStream dos, final byte[] messageBody) {
+        HttpResponse httpResponse = HttpResponseFactory.create302FoundResponse(messageBody);
+        httpResponse.addHeader("Location", "/index.html");
+        HttpResponseUtils.responseHeader(dos, httpResponse);
+        HttpResponseUtils.responseBody(dos, httpResponse);
+        log.debug("httpResponse: {}", httpResponse);
     }
 }
