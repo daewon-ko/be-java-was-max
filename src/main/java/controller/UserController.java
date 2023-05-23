@@ -5,13 +5,13 @@ import common.HttpVersion;
 import db.Database;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import request.HttpRequest;
-import request.component.HttpRequestHeader;
-import request.component.HttpRequestQueryString;
-import request.component.HttpRequestStartLine;
-import request.component.HttpRequestTarget;
-import utils.request.HttpRequestUtils;
-import utils.request.RequestHandlerUtils;
+import http.request.HttpRequest;
+import http.request.component.HttpRequestHeader;
+import http.request.component.HttpRequestQueryString;
+import http.request.component.HttpRequestStartLine;
+import http.request.component.HttpRequestTarget;
+import http.utils.request.HttpRequestUtils;
+import http.utils.request.RequestHandlerUtils;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static common.HttpMethod.POST;
-import static utils.response.HttpResponseUtils.*;
+import static http.utils.response.HttpResponseUtils.*;
 
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);

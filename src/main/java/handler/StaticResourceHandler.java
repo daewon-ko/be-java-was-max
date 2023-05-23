@@ -1,12 +1,12 @@
 package handler;
 
 import common.ContentType;
-import request.HttpRequest;
-import utils.request.RequestHandlerUtils;
+import http.request.HttpRequest;
+import http.utils.request.RequestHandlerUtils;
 
 import java.io.DataOutputStream;
 
-import static utils.response.HttpResponseUtils.sendHttp200Response;
+import static http.utils.response.HttpResponseUtils.sendHttp200Response;
 
 public class StaticResourceHandler {
 

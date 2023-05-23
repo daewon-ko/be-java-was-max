@@ -1,4 +1,4 @@
-package request.component;
+package http.request.component;
 
 import common.HttpMethod;
 import common.HttpVersion;

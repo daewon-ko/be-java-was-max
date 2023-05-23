@@ -1,4 +1,4 @@
-package request.component;
+package http.request.component;
 
 import java.util.Arrays;
 import java.util.HashMap;

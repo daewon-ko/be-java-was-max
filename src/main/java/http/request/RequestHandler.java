@@ -1,4 +1,4 @@
-package request;
+package http.request;
 
 import java.io.*;
 import java.net.Socket;
@@ -6,10 +6,10 @@ import java.net.Socket;
 
 import controller.UserController;
 import handler.StaticResourceHandler;
+import http.request.factory.HttpRequestFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import request.factory.HttpRequestFactory;
-import utils.request.RequestHandlerUtils;
+import http.utils.request.RequestHandlerUtils;
 
 import static java.nio.charset.StandardCharsets.*;
 

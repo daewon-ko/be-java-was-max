@@ -1,12 +1,12 @@
-package utils.response;
+package http.utils.response;
 
 import common.ContentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import response.HttpResponse;
-import response.HttpResponseFactory;
-import session.Session;
-import session.SessionFactory;
+import http.response.HttpResponse;
+import http.response.HttpResponseFactory;
+import http.session.Session;
+import http.session.SessionFactory;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

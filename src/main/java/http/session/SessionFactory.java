@@ -1,4 +1,4 @@
-package session;
+package http.session;
 
 
 public class SessionFactory {

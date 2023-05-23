@@ -1,10 +1,10 @@
-package utils.request;
+package http.utils.request;
 
 import db.Database;
 import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import request.component.HttpRequestQueryString;
+import http.request.component.HttpRequestQueryString;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,10 +1,8 @@
-package request;
+package http.request;
 
-import request.component.HttpRequestHeader;
-import request.component.HttpRequestQueryString;
-import request.component.HttpRequestStartLine;
-
-import java.util.HashMap;
+import http.request.component.HttpRequestHeader;
+import http.request.component.HttpRequestQueryString;
+import http.request.component.HttpRequestStartLine;
 
 public class HttpRequest {
     /*

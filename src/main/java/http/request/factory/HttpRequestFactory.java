@@ -1,15 +1,15 @@
-package request.factory;
+package http.request.factory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import request.HttpRequest;
+import http.request.HttpRequest;
 import common.HttpMethod;
 import common.HttpVersion;
-import request.component.HttpRequestHeader;
-import request.component.HttpRequestQueryString;
-import request.component.HttpRequestStartLine;
-import request.component.HttpRequestTarget;
-import utils.request.HttpRequestUtils;
+import http.request.component.HttpRequestHeader;
+import http.request.component.HttpRequestQueryString;
+import http.request.component.HttpRequestStartLine;
+import http.request.component.HttpRequestTarget;
+import http.utils.request.HttpRequestUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

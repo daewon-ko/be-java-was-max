@@ -1,6 +1,4 @@
-package response;
-
-import java.util.Arrays;
+package http.response;
 
 public class HttpResponse {
     private final HttpStatusLine httpStatusLine;

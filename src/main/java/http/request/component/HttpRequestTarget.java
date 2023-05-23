@@ -1,4 +1,4 @@
-package request.component;
+package http.request.component;
 
 public class HttpRequestTarget {
     private final String path;
