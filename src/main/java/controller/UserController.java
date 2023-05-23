@@ -75,8 +75,7 @@ public class UserController {
             ContentType contentType = ContentType.of(path);
             HttpRequestStartLine requestStartLine = httpRequest.getRequestStartLine();
             byte[] messageBody = RequestHandlerUtils.readFile(requestStartLine);
-            sendHttp302ResponseBasicHome(dos, messageBody);
-
+            sendHttp302ResponseBasicHomeUsingSession(dos, messageBody);
 
         }
         // DB에 존재하지 않을경우(즉 회원가입이 되어있지 않을 경우)

@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import response.HttpResponse;
 import response.HttpResponseFactory;
+import session.Session;
+import session.SessionFactory;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -57,4 +59,16 @@ public class HttpResponseUtils {
         HttpResponseUtils.responseBody(dos, httpResponse);
         log.debug("httpResponse: {}", httpResponse);
     }
+
+    public static void sendHttp302ResponseBasicHomeUsingSession(final DataOutputStream dos, final byte[] messageBody) {
+        HttpResponse httpResponse = HttpResponseFactory.create302FoundResponse(messageBody);
+        Session session = SessionFactory.createSession();
+        httpResponse.addHeader("Location", "/index.html");
+        httpResponse.addHeader("Set-cookie", session);
+        HttpResponseUtils.responseHeader(dos, httpResponse);
+        HttpResponseUtils.responseBody(dos, httpResponse);
+        log.debug("httpResponse: {}", httpResponse);
+    }
+
+
 }
