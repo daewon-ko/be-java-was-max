@@ -1,4 +1,4 @@
-package http.response;
+package http.response.component;
 
 import java.util.Map;
 import java.util.stream.Collectors;

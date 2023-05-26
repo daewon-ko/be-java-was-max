@@ -1,5 +1,8 @@
 package http.response;
 
+import http.response.component.HttpResponseHeader;
+import http.response.component.HttpStatusLine;
+
 public class HttpResponse {
     private final HttpStatusLine httpStatusLine;
     private final HttpResponseHeader httpResponseHeader;
@@ -18,6 +21,7 @@ public class HttpResponse {
     public HttpResponseHeader getHttpResponseHeader() {
         return httpResponseHeader;
     }
+
 
     public byte[] getHttpMessageBody() {
         return httpMessageBody;

@@ -1,6 +1,9 @@
 package http.response;
 
 import common.HttpVersion;
+import http.response.component.HttpResponseHeader;
+import http.response.component.HttpStatusCode;
+import http.response.component.HttpStatusLine;
 
 import java.util.HashMap;
 
