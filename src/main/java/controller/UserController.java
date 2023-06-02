@@ -44,7 +44,7 @@ public class UserController {
         byte[] messageBody = RequestHandlerUtils.readFile(requestStartLine);
 
         // 회원가입 시 Basic homepage인 index.html로 redirect
-        sendHttp302Response(dos, messageBody,"/index.html");
+        sendHttp302Response(dos, messageBody, "/index.html");
     }
 
 
@@ -99,14 +99,15 @@ public class UserController {
 //                        session1.
 //                    });
 
+            // cookie에 값이 존재하지 않을 때,
+//
 
             // cookie가 존재하지 않지 않을 경우 Session을 생성한 후 저장한다.
 //            if (!cookie.isPresent())
-                String sid = UUID.randomUUID().toString();
-                Session session = SessionStore.storeSession(sid, userId);
+            String sid = UUID.randomUUID().toString();
+            Session session = SessionStore.storeSession(sid, userId);
 
-                // 쿠키를 생성한다.
-
+            // 쿠키를 생성한다.
 
 
 //            if (SessionStore.findSession("sid") == null ||) {
@@ -119,7 +120,7 @@ public class UserController {
 //            }
 
 
-            sendHttp302ResponseBasicHomeUsingSession(dos, messageBody,session);
+            sendHttp302ResponseBasicHomeUsingSession(dos, messageBody, "/index.html", session);
 
         }
         // DB에 존재하지 않을경우(즉 회원가입이 되어있지 않을 경우)

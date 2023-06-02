@@ -51,15 +51,14 @@ public class HttpResponseUtils {
         log.debug("httpResponse: {}", httpResponse);
     }
 
-    public static void sendHttp302ResponseBasicHomeUsingSession(final DataOutputStream dos, final byte[] messageBody, Session session) {
+    public static void sendHttp302ResponseBasicHomeUsingSession(final DataOutputStream dos, final byte[] messageBody, String url, Session session) {
         HttpResponse httpResponse = HttpResponseFactory.create302FoundResponse(messageBody);
-        httpResponse.addHeader("Location", "/index.html");
+        httpResponse.addHeader("Location", url);
         httpResponse.addHeader("Set-cookie", session);
         HttpResponseUtils.responseHeader(dos, httpResponse);
         HttpResponseUtils.responseBody(dos, httpResponse);
         log.debug("httpResponse: {}", httpResponse);
     }
-
 
 
 }

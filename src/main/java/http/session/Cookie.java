@@ -1,8 +1,10 @@
 package http.session;
 
+import java.util.Map;
+
 public class Cookie {
 
-//    private Map<>
+//    private Map<String, String>
     private String name;
     private String value;
 
