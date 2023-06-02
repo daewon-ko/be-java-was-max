@@ -2,11 +2,20 @@ package http.response;
 
 import http.response.component.HttpResponseHeader;
 import http.response.component.HttpStatusLine;
+import http.session.Session;
+import http.session.SessionStore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HttpResponse {
     private final HttpStatusLine httpStatusLine;
     private final HttpResponseHeader httpResponseHeader;
     private final byte[] httpMessageBody;
+
+    private SessionStore sessionStore;
+
+
 
     public HttpResponse(final HttpStatusLine httpStatusLine, final HttpResponseHeader httpResponseHeader, final byte[] httpMessageBody) {
         this.httpStatusLine = httpStatusLine;
@@ -28,6 +37,27 @@ public class HttpResponse {
     }
 
 
+//    public String getSessionCookie() {
+//        List<String> sessions = new ArrayList<>();
+//        Session session = Session.createDefaultSession();
+//        String path = session.getPath();
+//        String sessionId = session.getSessionId();
+//        sessions.add(sessionId);
+//        sessions.add(path);
+//
+//        StringBuilder sb = new StringBuilder();
+//        for (String s : sessions) {
+//
+//        }
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("sid=").append(sessionId).append(";")
+//
+//
+//        return sessionId;
+//    }
+
+
+
     /**
      * HttpMessagebody는 왜 빠졌을까?
      * 또, httpResponseHeader 이후에 왜 두칸이나 뛸까?
@@ -43,4 +73,5 @@ public class HttpResponse {
         httpResponseHeader.addHeader(key, value);
 
     }
+
 }

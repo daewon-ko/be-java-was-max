@@ -9,13 +9,13 @@ public class HttpRequestHeader {
     /**
      * RequestHeader 역시 key-valuue 형식을 지원.
      */
-    Map<String, String> header = new HashMap<>();
+    private  Map<String, Object> header = new HashMap<>();
 
-    public HttpRequestHeader(final Map<String, String> parameter) {
+    public HttpRequestHeader(final Map<String, Object> parameter) {
         this.header = parameter;
     }
 
-    public String getHeader(String key) {
+    public Object getHeader(String key) {
         return header.get(key);
     }
 

@@ -56,7 +56,7 @@ public class HttpRequestFactory {
     }
 
     private static HttpRequestHeader parsingHeader(final BufferedReader br) throws IOException {
-        Map<String, String> header = new HashMap<>();
+        Map<String, Object> header = new HashMap<>();
         String line;
         while (!(line = br.readLine()).equals(CRLF)) {
             String[] split = line.split(REQUEST_HEADER_SEPARATOR);

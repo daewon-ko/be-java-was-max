@@ -1,4 +1,4 @@
-package http.request;
+package webserver;
 
 import java.io.*;
 import java.net.Socket;
@@ -6,6 +6,7 @@ import java.net.Socket;
 
 import controller.UserController;
 import handler.StaticResourceHandler;
+import http.request.HttpRequest;
 import http.request.factory.HttpRequestFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
